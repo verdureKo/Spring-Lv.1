@@ -360,7 +360,7 @@
       // 1. 작성 대상 Log의 author, textarea, contents 를 확인합니다.
       let author = $(`#${id}-textarea`).text().trim();
       // 패스워드 확인 어떻게하지..?
-      let password = $(`#${id}-textarea`).text().trim();
+      // let password = $(`#${id}-textarea`).val().trim();
       let contents = $(`#${id}-textarea`).val().trim();
 
       // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다.
@@ -369,7 +369,7 @@
       }
 
       // 3. 전달할 data JSON으로 만듭니다.
-      let data = {'author': author, 'password': password, 'contents': contents};
+      let data = {'author': author, 'contents': contents};
 
       // 4. PUT /api/ㅣlogs/{id} 에 data를 전달합니다.
       $.ajax({
