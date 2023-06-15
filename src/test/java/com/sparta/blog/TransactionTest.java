@@ -27,10 +27,10 @@ public class TransactionTest {
     @DisplayName("메모 생성 성공")
     void test1() {
         Blog blog = new Blog();
-        blog.setId(1L);
-        blog.setTitle("Title");
-        blog.setContent("@Transactional 테스트 중!");
         blog.setAuthor("푸름");
+        blog.setContents("@Transactional 테스트 중!");
+        blog.setPassword("1234");
+        blog.setTitle("Title");
 
         em.persist(blog);  // 영속성 컨텍스트에 메모 Entity 객체를 저장합니다.
     }
@@ -40,10 +40,11 @@ public class TransactionTest {
     @DisplayName("메모 생성 실패")
     void test2() {
         Blog blog = new Blog();
+        blog.setAuthor("부릉");
+        blog.setContents("@Transactional 테스트 중!");
+        blog.setPassword("1234");
         blog.setTitle("Title");
-        blog.setContent("@Transactional 테스트 중!");
-        blog.setAuthor("뷰륨");
-
+        
         em.persist(blog);  // 영속성 컨텍스트에 메모 Entity 객체를 저장합니다.
     }
 

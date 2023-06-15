@@ -219,6 +219,8 @@
       return true;
     }
 
+    // 비밀번호 판별함수 ㅜㅜ힝..
+
     // 익명의 username을 만듭니다.
     function genRandomName(length) {
       let result = '';
@@ -266,62 +268,79 @@
           for (let i = 0; i < response.length; i++) {
             let message = response[i];
             let id = message['id'];
-            let username = message['username'];
+            let author = message['author'];
+            let password = message['password'];
+            let title = message['title'];
             let contents = message['contents'];
+            let createAt = message['createAt'];
             let modifiedAt = message['modifiedAt'];
-            addHTML(id, username, contents, modifiedAt);
+            addHTML(id, author, password, title, contents, createAt, modifiedAt);
           }
         }
       })
     }
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-    function addHTML(id, username, contents, modifiedAt) {
+    function addHTML(id, author, password, title, contents, createAt, modifiedAt) {
       // 1. HTML 태그를 만듭니다.
       let tempHtml = `<div class="card">
-                <!-- date/username 영역 -->
-                <div class="metadata">
-                    <div class="date">
-                        ${modifiedAt}
-                    </div>
-                    <div id="${id}-username" class="username">
-                        ${username}
-                    </div>
-                </div>
-                <!-- contents 조회/수정 영역-->
-                <div class="contents">
-                    <div id="${id}-contents" class="text">
-                        ${contents}
-                    </div>
-                    <div id="${id}-editarea" class="edit">
-                        <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
-                    </div>
-                </div>
-                <!-- 버튼 영역-->
-                <div class="footer">
-                    <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
-                    <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
-                    <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
-                </div>
-            </div>`;
+                      <!-- date/author 영역 -->
+                      <div class="metadata">
+                          <div class="date">
+                              ${createAt}
+                          </div>
+                          <div class="date">
+                              ${modifiedAt}
+                          </div>
+                      </div>
+                      <!-- contents 조회/수정 영역-->
+                      <div id="${id}-author" class="author">
+                          ${author}
+                      </div>
+                      <div id="${id}-password" class="password">
+                          ${password}
+                      </div>
+                      <div class="contents">
+                          <div id="${id}-title" class="title">
+                              ${title}
+                          </div>
+                          <div id="${id}-contents" class="text">
+                              ${contents}
+                          </div>
+                          <div id="${id}-editarea" class="edit">
+                              <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                          </div>
+                      </div>
+                      <!-- 버튼 영역-->
+                      <div class="footer">
+                          <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
+                          <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
+                          <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
+                      </div>
+                  </div>`;
       // 2. #cards-box 에 HTML을 붙인다.
       $('#cards-box').append(tempHtml);
     }
 
     // 메모를 생성합니다.
     function writePost() {
-      // 1. 작성한 메모를 불러옵니다.
+      // 1. 작성한 Log를 불러옵니다.
+      let author = $('#author').val();
+      let password = $('#password').val();
+      let title = $('#title').val();
       let contents = $('#contents').val();
+      let createAt = $('#createAt').val();
+      let modifiedAt = $('#modifiedAt').val();
 
-      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다.
       if (isValidContents(contents) == false) {
         return;
       }
-      // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
-      let username = genRandomName(10);
+      // 3. genRandomName 함수를 통해 익명의 username을 만듭니다. -> author 걍 적은대로 불러오기
+      // let username = genRandomName(10);
 
       // 4. 전달할 data JSON으로 만듭니다.
-      let data = {'username': username, 'contents': contents};
+      let data = {'author': author, 'password': password, 'title': title, 'contents': contents, 'createAt': createAt, 'modifiedAt': modifiedAt};
 
       // 5. POST /api/logs 에 data를 전달합니다.
       $.ajax({
@@ -336,41 +355,43 @@
       });
     }
 
-    // 메모를 수정합니다.
+    // Log를 수정합니다.
     function submitEdit(id) {
-      // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
-      let username = $(`#${id}-username`).text().trim();
+      // 1. 작성 대상 Log의 author, textarea, contents 를 확인합니다.
+      let author = $(`#${id}-textarea`).text().trim();
+      // 패스워드 확인 어떻게하지..?
+      let password = $(`#${id}-textarea`).text().trim();
       let contents = $(`#${id}-textarea`).val().trim();
 
-      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+      // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다.
       if (isValidContents(contents) == false) {
         return;
       }
 
       // 3. 전달할 data JSON으로 만듭니다.
-      let data = {'username': username, 'contents': contents};
+      let data = {'author': author, 'password': password, 'contents': contents};
 
-      // 4. PUT /api/memos/{id} 에 data를 전달합니다.
+      // 4. PUT /api/ㅣlogs/{id} 에 data를 전달합니다.
       $.ajax({
         type: "PUT",
         url: `/api/logs/${id}`,
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
-          alert('메시지 변경에 성공하였습니다.');
+          alert('Log 변경에 성공하였습니다.');
           window.location.reload();
         }
       });
     }
 
-    // 메모를 삭제합니다.
+    // Log를 삭제합니다.
     function deleteOne(id) {
-      // 1. DELETE /api/memos/{id} 에 요청해서 메모를 삭제합니다.
+      // 1. DELETE /api/memos/{id} 에 요청해서 Log를 삭제합니다.
       $.ajax({
         type: "DELETE",
         url: `/api/logs/${id}`,
         success: function (response) {
-          alert('메시지 삭제에 성공하였습니다.');
+          alert('Log 삭제에 성공하였습니다.');
           window.location.reload();
         }
       })
@@ -392,32 +413,56 @@
      SpringBoot CRUD 연습하기
     </p>
   </div>
+
   <div class="area-write">
-        <textarea class="field" placeholder="중복키워드 넣어주세용 조회 해보게용" name="contents" id="contents" cols="30"
-                  rows="10"></textarea>
-    <!--            <button class="btn btn-danger" onclick="writePost()">작성하기</button>-->
-    <img src="images/send.png" alt="" onclick="writePost()">
+    <form>
+      <textarea class="field1" placeholder="제목을 입력해주세요" name="title" id="title" cols="30"
+                    rows="3"></textarea>
+      <textarea class="field2" placeholder="작성자" name="author" id="author" cols="15"
+                    rows="3"></textarea>
+      <textarea class="field3" placeholder="비밀번호" name="password" id="password" cols="15"
+                    rows="3"></textarea>
+      <textarea class="field" placeholder="내용을 입력해주세요" name="contents" id="contents" cols="30"
+                    rows="10"></textarea>
+      <img src="images/send.png" alt="" onclick="writePost()">
+    </form>
   </div>
+
   <div id="cards-box" class="area-read">
     <div class="card">
-      <!-- date/username 영역 -->
+      <!-- date/author 영역 -->
       <div class="metadata">
         <div class="date">
-          October 10, 2020
+          ${createAt}
         </div>
-        <div class="username">
-          anonymous
+        <div class="date">
+          ${modifiedAt}
         </div>
       </div>
       <!-- contents 조회/수정 영역-->
+      <div id="${id}-author" class="author">
+        ${author}
+      </div>
+      <div id="${id}-password" class="password">
+        ${password}
+      </div>
       <div class="contents">
-
+        <div id="${id}-title" class="title">
+          ${title}
+        </div>
+        <div id="${id}-contents" class="text">
+          ${contents}
+        </div>
+        <div id="${id}-editarea" class="edit">
+          <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+        </div>
       </div>
       <!-- 버튼 영역-->
       <div class="footer">
-        <img id="1-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('1')">
-        <img id="1-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('1')">
-        <img id="1-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('1')">
+        <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
+        <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
+        <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
+      </div>
       </div>
     </div>
   </div>
