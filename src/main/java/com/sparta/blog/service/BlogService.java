@@ -7,6 +7,7 @@ import com.sparta.blog.repository.BlogRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
+import java.util.InputMismatchException;
 import java.util.List;
 
 @Component  // Bean객체로 등록
@@ -46,20 +47,19 @@ public class BlogService {
     public Long updateBlog(Long id, BlogRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Blog blog = findBlog(id);
-
         // blog 내용 수정
-        blog.update(requestDto);
-
-        return id;
+        if(blog.getPassword().equals(requestDto.getPassword())){
+            blog.update(requestDto);
+            return id;
+        }else{
+            throw new InputMismatchException("비밀번호를 다시 입력해주세요");
+        }
     }
 
     public Long deleteBlog(Long id) {
         // 해당 메모가 DB에 존재하는지 확인
         Blog blog = findBlog(id);
-
-        // blog 삭제
         blogRepository.delete(blog);
-
         return id;
     }
 
