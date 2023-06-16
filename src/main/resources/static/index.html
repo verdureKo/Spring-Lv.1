@@ -140,11 +140,11 @@
       padding: 10px 23px;
     }
 
-    .card .metadata .date {
+    .card .metadata .date .date2 {
 
     }
 
-    .card .metadata .username {
+    .card .metadata .author date2 {
       margin-left: 20px;
     }
 
@@ -244,13 +244,19 @@
     // 숨길 버튼을 숨기고, 나타낼 버튼을 나타냅니다.
     function editPost(id) {
       showEdits(id);
-      // let password = $(`#${id}-password`).text().trim();
+      // $(`#${id}-editarea_c`).show();
+      //
+      // $(`#${id}-contents`).show();
+      // $(`#${id}-submit`).show();
+      // $(`#${id}-delete`).show();
 
-      // $(`#${id}-textarea_p`).val(password);
+      // $(`#${id}-edit`).hide();
     }
 
     function showEdits(id) {
       $(`#${id}-editarea_c`).show();
+      $(`#${id}-editarea_t`).show();
+      $(`#${id}-editarea_p`).show();
       $(`#${id}-contents`).show();
       $(`#${id}-submit`).show();
       $(`#${id}-delete`).show();
@@ -296,7 +302,7 @@
                           <div class="date">
                               ${createAt}
                           </div>
-                          <div class="date">
+                          <div class="date2">
                               ${modifiedAt}
                           </div>
                       </div>
@@ -304,17 +310,13 @@
                       <div id="${id}-author" class="author">
                           ${author}
                       </div>
-                      <div class="password">
+                      <div class="contents">
                           <div id="${id}-editarea_p" class="edit">
                               <textarea id="${id}-textarea_p" class="te-edit" name="" id="" cols="30" rows="3" placeholder="비밀번호를 입력해주세요"></textarea>
                           </div>
-                      </div>
-                      <div class="title">
                           <div id="${id}-editarea_t" class="edit">
                               <textarea id="${id}-textarea_t" class="te-edit" name="" id="" cols="30" rows="3">${title}</textarea>
                           </div>
-                      </div>
-                      <div class="contents">
                           <div id="${id}-editarea_c" class="edit">
                               <textarea id="${id}-textarea_c" class="te-edit" name="" id="" cols="30" rows="5">${contents}</textarea>
                           </div>
