@@ -43,7 +43,7 @@ public class BlogService {
         return blogRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).stream().map(BlogResponseDto::new).toList();
     }
 
-    public BlogResponseDto getBlog(Long id, BlogRequestDto requestDto) {
+    public BlogResponseDto getBlog(Long id) {
         Blog blog  =  findBlog(id);
         BlogResponseDto blogResponseDto =  new BlogResponseDto(blog);
         return blogResponseDto;

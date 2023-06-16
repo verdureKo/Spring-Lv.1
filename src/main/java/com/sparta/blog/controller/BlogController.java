@@ -28,9 +28,9 @@ public class BlogController {
     }
 
     @GetMapping("/log/{id}")
-    public BlogResponseDto getBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
-        return blogService.getBlog(id, requestDto);
-    }
+    public BlogResponseDto getBlog(@PathVariable Long id) {
+        return blogService.getBlog(id);
+    }   // @Requestbody를 빼면 되는것이였어
 
     @GetMapping("/log/contents")
     public List<BlogResponseDto> getBlogsByKeyword(String keyword) {
