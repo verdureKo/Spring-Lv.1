@@ -26,6 +26,11 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
+//    @GetMapping("/log/{id}")
+//    public Long getBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+//        return blogService.getBlog(id, requestDto);
+//    }
+
     @GetMapping("/log/contents")
     public List<BlogResponseDto> getBlogsByKeyword(String keyword) {
         return blogService.getBlogsByKeyword(keyword);

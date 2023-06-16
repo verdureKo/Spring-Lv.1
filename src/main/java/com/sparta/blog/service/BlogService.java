@@ -43,6 +43,10 @@ public class BlogService {
         return blogRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).stream().map(BlogResponseDto::new).toList();
     }
 
+//    public Long getBlog(Long id, BlogRequestDto requestDto) {
+//
+//    }
+
     @Transactional  // 변경감지: 영속성
     public Long updateBlog(Long id, BlogRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
@@ -69,4 +73,5 @@ public class BlogService {
                 new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
         );
     }
+
 }
