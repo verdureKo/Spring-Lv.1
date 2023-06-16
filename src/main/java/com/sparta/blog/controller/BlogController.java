@@ -2,6 +2,7 @@ package com.sparta.blog.controller;
 
 import com.sparta.blog.dto.BlogRequestDto;
 import com.sparta.blog.dto.BlogResponseDto;
+import com.sparta.blog.entity.Blog;
 import com.sparta.blog.service.BlogService;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +27,10 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
-//    @GetMapping("/log/{id}")
-//    public Long getBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
-//        return blogService.getBlog(id, requestDto);
-//    }
+    @GetMapping("/log/{id}")
+    public BlogResponseDto getBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+        return blogService.getBlog(id, requestDto);
+    }
 
     @GetMapping("/log/contents")
     public List<BlogResponseDto> getBlogsByKeyword(String keyword) {

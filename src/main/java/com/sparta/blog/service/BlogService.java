@@ -43,9 +43,11 @@ public class BlogService {
         return blogRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).stream().map(BlogResponseDto::new).toList();
     }
 
-//    public Long getBlog(Long id, BlogRequestDto requestDto) {
-//
-//    }
+    public BlogResponseDto getBlog(Long id, BlogRequestDto requestDto) {
+        Blog blog  =  findBlog(id);
+        BlogResponseDto blogResponseDto =  new BlogResponseDto(blog);
+        return blogResponseDto;
+    }
 
     @Transactional  // 변경감지: 영속성
     public Long updateBlog(Long id, BlogRequestDto requestDto) {
