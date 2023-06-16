@@ -238,12 +238,18 @@
     // 숨길 버튼을 숨기고, 나타낼 버튼을 나타냅니다.
     function editPost(id) {
       showEdits(id);
+      let password = $(`#${id}-password`).text().trim();
+      let title = $(`#${id}-title`).text().trim();
       let contents = $(`#${id}-contents`).text().trim();
-      $(`#${id}-textarea`).val(contents);
+      $(`#${id}-textarea1`).val(password);
+      $(`#${id}-textarea2`).val(title);
+      $(`#${id}-textarea3`).val(contents);
     }
 
     function showEdits(id) {
-      $(`#${id}-editarea`).show();
+      $(`#${id}-editarea1`).show();
+      $(`#${id}-editarea2`).show();
+      $(`#${id}-editarea3`).show();
       $(`#${id}-submit`).show();
       $(`#${id}-delete`).show();
 
@@ -297,18 +303,19 @@
                       <div id="${id}-author" class="author">
                           ${author}
                       </div>
-                      <div id="${id}-password" class="password">
-                          ${password}
+                      <div class="password">
+                          <div id="${id}-editarea" class="edit">
+                              <textarea id="${id}-textarea1" class="te-edit" name="" id="" cols="30" rows="3">${password}</textarea>
+                          </div>
+                      </div>
+                      <div class="title">
+                          <div id="${id}-editarea" class="edit">
+                              <textarea id="${id}-textarea2" class="te-edit" name="" id="" cols="30" rows="3">${title}</textarea>
+                          </div>
                       </div>
                       <div class="contents">
-                          <div id="${id}-title" class="title">
-                              ${title}
-                          </div>
-                          <div id="${id}-contents" class="text">
-                              ${contents}
-                          </div>
                           <div id="${id}-editarea" class="edit">
-                              <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                              <textarea id="${id}-textarea3" class="te-edit" name="" id="" cols="30" rows="5">${contents}</textarea>
                           </div>
                       </div>
                       <!-- 버튼 영역-->
@@ -342,10 +349,10 @@
       // 4. 전달할 data JSON으로 만듭니다.
       let data = {'author': author, 'password': password, 'title': title, 'contents': contents, 'createAt': createAt, 'modifiedAt': modifiedAt};
 
-      // 5. POST /api/logs 에 data를 전달합니다.
+      // 5. POST /api/log 에 data를 전달합니다.
       $.ajax({
         type: "POST",
-        url: "/api/logs",
+        url: "/api/log",
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
@@ -357,10 +364,11 @@
 
     // Log를 수정합니다.
     function submitEdit(id) {
-      // 1. 작성 대상 Log의 author, textarea, contents 를 확인합니다.
+      // 1. 작성 대상 Log의 author, password, title, contents 를 확인합니다.
       let author = $(`#${id}-textarea`).text().trim();
       // 패스워드 확인 어떻게하지..?
-      // let password = $(`#${id}-textarea`).val().trim();
+      let password = $(`#${id}-textarea`).val().trim();
+      let title = $(`#${id}-textarea`).val().trim();
       let contents = $(`#${id}-textarea`).val().trim();
 
       // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다.
@@ -369,12 +377,12 @@
       }
 
       // 3. 전달할 data JSON으로 만듭니다.
-      let data = {'author': author, 'contents': contents};
+      let data = {'author': author, 'password': password, 'title': title, 'contents': contents};
 
-      // 4. PUT /api/ㅣlogs/{id} 에 data를 전달합니다.
+      // 4. PUT /api/ㅣlog/{id} 에 data를 전달합니다.
       $.ajax({
         type: "PUT",
-        url: `/api/logs/${id}`,
+        url: `/api/log/${id}`,
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
@@ -389,7 +397,7 @@
       // 1. DELETE /api/memos/{id} 에 요청해서 Log를 삭제합니다.
       $.ajax({
         type: "DELETE",
-        url: `/api/logs/${id}`,
+        url: `/api/log/${id}`,
         success: function (response) {
           alert('Log 삭제에 성공하였습니다.');
           window.location.reload();

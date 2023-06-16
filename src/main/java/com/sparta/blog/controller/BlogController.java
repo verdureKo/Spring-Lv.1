@@ -16,7 +16,7 @@ public class BlogController {
         // new 하지않고, 외부에서 만든 파라미터로 전달
     }
 
-    @PostMapping("/logs")
+    @PostMapping("/log")
     public BlogResponseDto createBlog(@RequestBody BlogRequestDto requestDto) {
         return blogService.createBlog(requestDto);
     }
@@ -26,17 +26,17 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
-    @GetMapping("/logs/contents")
+    @GetMapping("/log/contents")
     public List<BlogResponseDto> getBlogsByKeyword(String keyword) {
         return blogService.getBlogsByKeyword(keyword);
     }
 
-    @PutMapping("/logs/{id}")
+    @PutMapping("/log/{id}")
     public Long updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
         return blogService.updateBlog(id, requestDto);
     }
 
-    @DeleteMapping("/logs/{id}")
+    @DeleteMapping("/log/{id}")
     public Long deleteBlog(@PathVariable Long id) {
         return blogService.deleteBlog(id);
     }
