@@ -50,23 +50,24 @@ public class BlogService {
     }
 
     @Transactional  // 변경감지: 영속성
-    public Long updateBlog(Long id, BlogRequestDto requestDto) {
+    public String updateBlog(Long id, BlogRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Blog blog = findBlog(id);
         // blog 내용 수정
-        if(blog.getPassword().equals(requestDto.getPassword())){
+        if (blog.getPassword().equals(requestDto.getPassword())) {
             blog.update(requestDto);
-            return id;
-        }else{
+            return id + "번 Log 수정완료";
+        } else {
             throw new InputMismatchException("비밀번호를 다시 입력해주세요");
         }
     }
 
-    public Long deleteBlog(Long id) {
+    public String deleteBlog(Long id) {
         // 해당 메모가 DB에 존재하는지 확인
         Blog blog = findBlog(id);
-        blogRepository.delete(blog);
-        return id;
+        // blog 내용 삭제
+            blogRepository.delete(blog);
+            return id+"번 Log 삭제완료";
     }
 
     // 공통으로 사용하는 코드는 아래위치하는 것이 좋다
