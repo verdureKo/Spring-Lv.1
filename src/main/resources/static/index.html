@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Service</title>
+  <title>Memo Service</title>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 
   <style>
-    /*@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);*/
+    @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
     body {
       margin: 0px;
@@ -66,7 +66,7 @@
     }
 
     .header h2 {
-      font-family: 'Noto Sans KR', sans-serif;
+      /*font-family: 'Noto Sans KR', sans-serif;*/
       height: 33px;
       font-size: 42px;
       font-weight: 500;
@@ -140,7 +140,11 @@
       padding: 10px 23px;
     }
 
-    .card .metadata .author .date .date2 {
+    .card .metadata .date {
+
+    }
+
+    .card .metadata .username {
       margin-left: 20px;
     }
 
@@ -154,14 +158,14 @@
       display: none;
     }
 
-    .contents textarea_p textarea_t textarea_c.te-edit {
+    .contents textarea.te-edit {
       border-right: none;
       border-top: none;
       border-left: none;
       resize: none;
       border-bottom: 1px solid #212529;
       width: 100%;
-      /*font-family: 'Spoqa Han Sans';*/
+      font-family: 'Spoqa Han Sans';
     }
 
     .footer {
@@ -202,7 +206,7 @@
     }
   </style>
   <script>
-    // 사용자가 내용을 올바르게 입력하였는지 확인합니다. <-이거는 필요한걸까..?
+    // 사용자가 내용을 올바르게 입력하였는지 확인합니다.
     function isValidContents(contents) {
       if (contents == '') {
         alert('내용을 입력해주세요');
@@ -213,14 +217,6 @@
         return false;
       }
       return true;
-    }
-
-    // 패스워드 확인
-    function isValidPassWord(password) {
-      if (password == '') {
-        alert('내용을 입력해주세요');
-        return false;
-      }
     }
 
     // 익명의 username을 만듭니다.
@@ -240,23 +236,16 @@
     // 숨길 버튼을 숨기고, 나타낼 버튼을 나타냅니다.
     function editPost(id) {
       showEdits(id);
-      // $(`#${id}-editarea_c`).show();
-      //
-      // $(`#${id}-contents`).show();
-      // $(`#${id}-submit`).show();
-      // $(`#${id}-delete`).show();
-
-      // $(`#${id}-edit`).hide();
+      let contents = $(`#${id}-contents`).text().trim();
+      $(`#${id}-textarea`).val(contents);
     }
 
     function showEdits(id) {
-      $(`#${id}-editarea_c`).show();
-      $(`#${id}-editarea_t`).show();
-      $(`#${id}-editarea_p`).show();
-      $(`#${id}-contents`).show();
+      $(`#${id}-editarea`).show();
       $(`#${id}-submit`).show();
       $(`#${id}-delete`).show();
 
+      $(`#${id}-contents`).hide();
       $(`#${id}-edit`).hide();
     }
 
@@ -272,134 +261,116 @@
       // 2. 메모 목록을 불러와서 HTML로 붙입니다.
       $.ajax({
         type: 'GET',
-        url: '/api/logs',
+        url: '/api/memos',
         success: function (response) {
           for (let i = 0; i < response.length; i++) {
             let message = response[i];
             let id = message['id'];
-            let author = message['author'];
-            let password = message['password'];
-            let title = message['title'];
+            let username = message['username'];
             let contents = message['contents'];
-            let createAt = message['createAt'];
             let modifiedAt = message['modifiedAt'];
-            addHTML(id, author, password, title, contents, createAt, modifiedAt);
+            addHTML(id, username, contents, modifiedAt);
           }
         }
       })
     }
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-    function addHTML(id, author, password, title, contents, createAt, modifiedAt) {
+    function addHTML(id, username, contents, modifiedAt) {
       // 1. HTML 태그를 만듭니다.
       let tempHtml = `<div class="card">
-                      <!-- date/author 영역 -->
-                      <div class="metadata">
-                          <div class="date">
-                              ${createAt}
-                          </div>
-                          <div class="date2">
-                              ${modifiedAt}
-                          </div>
-                      </div>
-                      <!-- contents 조회/수정 영역-->
-                      <div id="${id}-author" class="author">
-                          ${author}
-                      </div>
-                      <div class="contents">
-                          <div id="${id}-editarea_p" class="edit">
-                              <textarea id="${id}-textarea_p" class="te-edit" name="" id="" cols="30" rows="3" placeholder="비밀번호를 입력해주세요"></textarea>
-                          </div>
-                          <div id="${id}-editarea_t" class="edit">
-                              <textarea id="${id}-textarea_t" class="te-edit" name="" id="" cols="30" rows="3">${title}</textarea>
-                          </div>
-                          <div id="${id}-editarea_c" class="edit">
-                              <textarea id="${id}-textarea_c" class="te-edit" name="" id="" cols="30" rows="5">${contents}</textarea>
-                          </div>
-                      </div>
-                      <!-- 버튼 영역-->
-                      <div class="footer">
-                          <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
-                          <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
-                          <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
-                      </div>
-                  </div>`;
+                <!-- date/username 영역 -->
+                <div class="metadata">
+                    <div class="date">
+                        ${modifiedAt}
+                    </div>
+                    <div id="${id}-username" class="username">
+                        ${username}
+                    </div>
+                </div>
+                <!-- contents 조회/수정 영역-->
+                <div class="contents">
+                    <div id="${id}-contents" class="text">
+                        ${contents}
+                    </div>
+                    <div id="${id}-editarea" class="edit">
+                        <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                    </div>
+                </div>
+                <!-- 버튼 영역-->
+                <div class="footer">
+                    <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
+                    <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
+                    <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
+                </div>
+            </div>`;
       // 2. #cards-box 에 HTML을 붙인다.
       $('#cards-box').append(tempHtml);
     }
 
-    // 1. Log를 생성합니다.
+    // 메모를 생성합니다.
     function writePost() {
-      // 1. 작성한 Log를 불러옵니다.
-      let author = $('#author').val();
-      let password = $('#password').val();
-      let title = $('#title').val();
+      // 1. 작성한 메모를 불러옵니다.
       let contents = $('#contents').val();
-      let createAt = $('#createAt').val();
-      let modifiedAt = $('#modifiedAt').val();
 
-      // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다. <- 그 500제한 준거랑 상관있는건지 모르겠움
-
+      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
       if (isValidContents(contents) == false) {
         return;
       }
-
-      // 3. genRandomName 함수를 통해 익명의 username을 만듭니다. -> author 걍 적은대로 불러오기
-      // let username = genRandomName(10);
+      // 3. genRandomName 함수를 통해 익명의 username을 만듭니다.
+      let username = genRandomName(10);
 
       // 4. 전달할 data JSON으로 만듭니다.
-      let data = {'author': author, 'password': password, 'title': title, 'contents': contents, 'createAt': createAt, 'modifiedAt': modifiedAt};
+      let data = {'username': username, 'contents': contents};
 
-      // 5. POST /api/log 에 data를 전달합니다.
+      // 5. POST /api/memos 에 data를 전달합니다.
       $.ajax({
         type: "POST",
-        url: "/api/log",
+        url: "/api/memos",
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
-          alert('Log가 성공적으로 작성되었습니다.');
+          alert('메시지가 성공적으로 작성되었습니다.');
           window.location.reload();
         }
       });
     }
 
-    // Log를 수정합니다.
+    // 메모를 수정합니다.
     function submitEdit(id) {
-      // 1. 작성 대상 Log의 author, password, title, contents 를 확인합니다.
-      let author = $(`#${id}-author`).text().trim();
-      let password = $(`#${id}-textarea_p`).val().trim();
-      let title = $(`#${id}-textarea_t`).val().trim();
-      let contents = $(`#${id}-textarea_c`).val().trim();
+      // 1. 작성 대상 메모의 username과 contents 를 확인합니다.
+      let username = $(`#${id}-username`).text().trim();
+      let contents = $(`#${id}-textarea`).val().trim();
 
-      // 2. 작성한 Log가 올바른지 isValidContents 함수를 통해 확인합니다.
+      // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
       if (isValidContents(contents) == false) {
         return;
       }
 
       // 3. 전달할 data JSON으로 만듭니다.
-      let data = {'author': author, 'password': password, 'title': title, 'contents': contents};
+      let data = {'username': username, 'contents': contents};
 
-      // 4. PUT /api/ㅣlog/{id} 에 data를 전달합니다.
+      // 4. PUT /api/memos/{id} 에 data를 전달합니다.
       $.ajax({
         type: "PUT",
-        url: `/api/log/${id}`,
+        url: `/api/memos/${id}`,
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (response) {
-          alert('Log 변경에 성공하였습니다.');
+          alert('메시지 변경에 성공하였습니다.');
           window.location.reload();
         }
       });
     }
 
-    // Log를 삭제합니다.
+    // 메모를 삭제합니다.
     function deleteOne(id) {
-      // 1. DELETE /api/memos/{id} 에 요청해서 Log를 삭제합니다.
+      // 1. DELETE /api/memos/{id} 에 요청해서 메모를 삭제합니다.
       $.ajax({
         type: "DELETE",
-        url: `/api/log/${id}`,
+        url: `/api/memos/${id}`,
         success: function (response) {
-          alert('Log 삭제에 성공하였습니다.');
+          alert('메시지 삭제에 성공하였습니다.');
           window.location.reload();
         }
       })
@@ -416,61 +387,37 @@
 </div>
 <div class="wrap">
   <div class="header">
-    <h2>🍃 BLOG</h2>
+    <h2>Memo</h2>
     <p>
-     SpringBoot CRUD 연습하기
+      공유하고 싶은 소식을 입력해주세요.
     </p>
   </div>
-
   <div class="area-write">
-    <form>
-      <textarea class="field1" placeholder="제목을 입력해주세요" name="title" id="title" cols="30"
-                    rows="3"></textarea>
-      <textarea class="field2" placeholder="작성자" name="author" id="author" cols="15"
-                    rows="3"></textarea>
-      <textarea class="field3" placeholder="비밀번호" name="password" id="password" cols="15"
-                    rows="3"></textarea>
-      <textarea class="field" placeholder="내용을 입력해주세요" name="contents" id="contents" cols="30"
-                    rows="10"></textarea>
-      <img src="images/send.png" alt="" onclick="writePost()">
-    </form>
+        <textarea class="field" placeholder="공유하고 싶은 소식을 입력해주세요" name="contents" id="contents" cols="30"
+                  rows="10"></textarea>
+    <!--            <button class="btn btn-danger" onclick="writePost()">작성하기</button>-->
+    <img src="images/send.png" alt="" onclick="writePost()">
   </div>
-
   <div id="cards-box" class="area-read">
     <div class="card">
-      <!-- date/author 영역 -->
+      <!-- date/username 영역 -->
       <div class="metadata">
         <div class="date">
-          ${createAt}
+          October 10, 2020
         </div>
-        <div class="date">
-          ${modifiedAt}
+        <div class="username">
+          anonymous
         </div>
       </div>
       <!-- contents 조회/수정 영역-->
-      <div id="${id}-author" class="author">
-        ${author}
-      </div>
-      <div id="${id}-password" class="password">
-        ${password}
-      </div>
       <div class="contents">
-        <div id="${id}-title" class="title">
-          ${title}
-        </div>
-        <div id="${id}-contents" class="text">
-          ${contents}
-        </div>
-        <div id="${id}-editarea" class="edit">
-          <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
-        </div>
+
       </div>
       <!-- 버튼 영역-->
       <div class="footer">
-        <img id="${id}-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('${id}')">
-        <img id="${id}-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('${id}')">
-        <img id="${id}-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('${id}')">
-      </div>
+        <img id="1-edit" class="icon-start-edit" src="images/edit.png" alt="" onclick="editPost('1')">
+        <img id="1-delete" class="icon-delete" src="images/delete.png" alt="" onclick="deleteOne('1')">
+        <img id="1-submit" class="icon-end-edit" src="images/done.png" alt="" onclick="submitEdit('1')">
       </div>
     </div>
   </div>

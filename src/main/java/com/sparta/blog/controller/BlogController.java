@@ -37,12 +37,14 @@ public class BlogController {
     }
 
     @PutMapping("/log/{id}")
-    public String updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+    public BlogResponseDto updateBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+
         return blogService.updateBlog(id, requestDto);
     }
 
     @DeleteMapping("/log/{id}")
-    public String deleteBlog(@PathVariable Long id) {
-        return blogService.deleteBlog(id);
+    public BlogResponseDto deleteBlog(@PathVariable Long id, @RequestBody BlogRequestDto requestDto) {
+        blogService.deleteBlog(id, requestDto.getPassword());
+        return new BlogResponseDto(true);
     }
 }
