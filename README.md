@@ -35,10 +35,9 @@
 
 ### API 명세서
 ![API 명세](/src/main/resources/static/images/API.PNG)
-![API 명세](/src/main/resources/static/images/꼬롬한입력화면.PNG)
 
 부족한 부분
-- **PostMan**을 잘 활용했다면 이런 꼬롬한 입력창도 안만들었을텐데 안타깝다.
+- **PostMan** 활용 연습
 - 비밀번호 입력 후 삭제 부분 강의 복습후 구현
 - 테스트부분 복습
 
