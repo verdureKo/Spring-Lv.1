@@ -5,11 +5,11 @@ import com.sparta.blog.dto.BlogResponseDto;
 import com.sparta.blog.entity.Blog;
 import com.sparta.blog.repository.BlogRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component  // Bean객체로 등록
+@Service // @Component 기능을 포함하고 서비스 역할까지 표현해주는 @Service 어노테이션을 사용
 public class BlogService {
     private final BlogRepository blogRepository;
 
@@ -29,12 +29,6 @@ public class BlogService {
 
     public List<BlogResponseDto> getBlogs() {
         return blogRepository.findAllByOrderByModifiedAtDesc().stream()
-                .map(BlogResponseDto::new)
-                .toList();
-    }
-
-    public List<BlogResponseDto> getBlogsByKeyword(String keyword) {
-        return blogRepository.findAllByContentsContainsOrderByModifiedAtDesc(keyword).stream()
                 .map(BlogResponseDto::new)
                 .toList();
     }

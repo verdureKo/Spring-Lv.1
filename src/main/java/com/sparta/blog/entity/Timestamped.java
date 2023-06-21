@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)  // 작성, 수정 일시 쾅쾅
 public abstract class Timestamped {
 
-    @CreatedDate
-    @Column(updatable = false)  // 작성일은 업데이트 하지않는 옵션
+    @CreatedDate // 사용하면 자동으로 updatable = false옵션 적용
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
