@@ -28,7 +28,7 @@ public class BlogController {
         return blogService.getBlogs();
     }
 
-    @GetMapping("/logs/{id}")
+    @GetMapping("/logs/{id}")   // path의 {id}로 글 1개인 것을 알 수 있다
     public BlogResponseDto getBlog(@PathVariable Long id) {
         return blogService.getBlog(id);
     }
