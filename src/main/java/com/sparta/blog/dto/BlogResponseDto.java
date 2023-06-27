@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class BlogResponseDto {
     private boolean success;
     private Long id;
-    private String author;
+    private String username;
     private String title;
     private String contents;
     private LocalDateTime createAt;
@@ -19,7 +19,7 @@ public class BlogResponseDto {
 
     public BlogResponseDto(Blog blog) {
         this.id = blog.getId();
-        this.author = blog.getAuthor();
+        this.username = blog.getUsername();
         this.title = blog.getTitle();
         this.contents = blog.getContents();
         this.createAt = blog.getCreatedAt();

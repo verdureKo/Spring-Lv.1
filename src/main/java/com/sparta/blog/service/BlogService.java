@@ -46,7 +46,7 @@ public class BlogService {
         blog.checkPassword(requestDto.getPassword());
 
         blog.setTitle(requestDto.getTitle());
-        blog.setAuthor(requestDto.getAuthor());
+        blog.setUsername(requestDto.getUsername());
         blog.setContents(requestDto.getContents());
 
         return new BlogResponseDto(blog);

@@ -31,7 +31,7 @@ class BlogApplicationTests {
 	@DisplayName("Test Log 생성 성공")
 	void test1() {
 		Blog blog = new Blog();
-		blog.setAuthor("푸름");
+		blog.setUsername("푸름");
 		blog.setContents("@Transactional 테스트 중!");
 		blog.setPassword("1234");
 		blog.setTitle("제목");
@@ -44,7 +44,7 @@ class BlogApplicationTests {
 	@DisplayName("Test Log 생성 실패")
 	void test2() {
 		Blog blog = new Blog();
-		blog.setAuthor("푸름");
+		blog.setUsername("푸름");
 		blog.setContents("@Transactional 테스트 중!");
 		blog.setPassword("1234");
 		blog.setTitle("Title");
