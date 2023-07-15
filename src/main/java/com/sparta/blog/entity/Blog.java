@@ -1,7 +1,6 @@
 package com.sparta.blog.entity;
 
 import com.sparta.blog.dto.BlogRequestDto;
-import com.sparta.blog.dto.BlogResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,8 @@ public class Blog extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "author", nullable = false)
-    private String author;
+    @Column(name = "username", nullable = false)
+    private String username;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "title", nullable = false)
@@ -26,7 +25,7 @@ public class Blog extends Timestamped {
     private String contents;
 
     public Blog(BlogRequestDto requestDto) {
-        this.author = requestDto.getAuthor();
+        this.username = requestDto.getUsername();
         this.password = requestDto.getPassword();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();

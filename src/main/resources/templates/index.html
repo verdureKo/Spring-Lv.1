@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Service</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/basic.js"></script>
+</head>
+
+<body>
+<div class="background-header">
+
+</div>
+<div class="background-body">
+
+</div>
+<div class="wrap">
+  <div class="header">
+    <h2>🍃 BLOG</h2>
+    <p>
+      SpringBoot CRUD 연습하기
+    </p>
+  </div>
+  <div class="area-write">
+    <div class="card">
+      <textarea class="field" placeholder="작성자" name="username" id="username" cols="30" rows="1"></textarea>
+      <textarea class="field" placeholder="비밀번호" name="password" id="password" cols="30" rows="1"></textarea>
+      <textarea class="field" placeholder="제목" name="title" id="title" cols="30" rows="1"></textarea>
+      <textarea class="field1" placeholder="내용" name="contents" id="contents" cols="30" rows="10"></textarea>
+      <img src="/images/send.png" alt="" onclick="writePost()">
+    </div>
+  </div>
+  <div id="cards-box" class="area-read">
+    <div class="card">
+      <!-- date/username 영역 -->
+      <div class="metadata">
+        <div class="date">
+          October 10, 2020
+        </div>
+        <div class="date">
+          October 10, 2020
+        </div>
+        <div class="username">
+          anonymous
+        </div>
+      </div>
+      <!-- contents 조회/수정 영역-->
+      <div class="contents">
+        <div id="${id}-password" class="text">
+        </div>
+        <div id="${id}-editarea-p" class="edit">
+          <textarea id="${id}-textarea-p" class="te-edit" cols="30" rows="1"></textarea>
+        </div>
+        <div id="${id}-title" class="text">
+          ${title}
+        </div>
+        <div id="${id}-editarea-t" class="edit">
+          <textarea id="${id}-textarea-t" class="te-edit" cols="30" rows="1"></textarea>
+        </div>
+        <div id="${id}-contents" class="text">
+          ${contents}
+        </div>
+        <div id="${id}-editarea-c" class="edit">
+          <textarea id="${id}-textarea-c" class="te-edit" cols="30" rows="5"></textarea>
+        </div>
+      </div>
+      <!-- 버튼 영역-->
+      <div class="footer">
+        <img id="1-edit" class="icon-start-edit" src="/images/edit.png" alt="" onclick="editPost('1')">
+        <img id="1-delete" class="icon-delete" src="/images/delete.png" alt="" onclick="deletePost('1')">
+        <img id="1-confirm" class="icon-end-edit" src="/images/done.png" alt="" onclick="confirmDelete('1')">
+        <img id="1-submit" class="icon-end-edit" src="/images/done.png" alt="" onclick="submitEdit('1')">
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>
