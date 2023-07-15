@@ -1,71 +1,53 @@
-# **BLOG_CRUD**
- 
-✔ **요구사항**
+# SPRING.V1
 
-## 1. 아래의 요구사항을 기반으로 Use Case 그려보기
+"스프링 부트로 로그인 기능이 없는 나만의 블로그 백엔드 서버 만들기"
+
+[Notion 바로가기](https://www.notion.so/verdureko/Spring-Lv-1-f852c5d02cda474bb69c52aed25e397e)
+
+## UseCase
+
 <img width="300" alt="useCaseDiagram" src="res/useCase.PNG">
 
-팀원분이 😳 [draw.io](https://app.diagrams.net/) 라는 꿀앱을 알려주셔서 쉽게 그릴 수 있었다!
+## ERD
 
----
-
-## 2. 전체 게시글 목록 조회 API
-
-- 제목, 작성자명, 작성 내용, 작성 날짜를 조회하기
-- 작성 날짜 기준 내림차순으로 정렬하기
-
-<img width="800" alt="Get" src="res/get.PNG">
-
-postman을 활용하면 결과를 쉽게 확인할 수 있다.\
-사용법을 잘 모르겠어서 시간을 허비했다.
-
----
-
-## 3. 게시글 작성 API
-
-- 제목, 작성자명, 비밀번호, 작성 내용을 저장하고
-- 저장된 게시글을 Client 로 반환하기
-
-<img width="800" alt="Get" src="res/post.PNG">
-
----
-
-## 4. 선택한 게시글 조회 API
-
-- 선택한 게시글의 제목, 작성자명, 작성 날짜, 작성 내용을 조회하기
-- 글번호로 조회
-
-<img width="800" alt="Get" src="res/getOne.PNG">
-
----
-
-## 5. 선택한 게시글 수정 API
-
-- 수정을 요청할 때 수정할 데이터와 비밀번호를 같이 보내서 서버에서 비밀번호 일치 여부를 확인 한 후
-- 제목, 작성자명, 작성 내용을 수정하고 수정된 게시글을 Client 로 반환하기
-
-<img width="800" alt="Get" src="res/put.PNG">
-
----
-
-## 6. 선택한 게시글 삭제 API
-
-- 삭제를 요청할 때 비밀번호를 같이 보내서 서버에서 비밀번호 일치 여부를 확인 한 후
-- 선택한 게시글을 삭제하고 Client 로 성공했다는 표시 반환하기
-
-<img width="800" alt="Get" src="res/delete.PNG">
-
----
+<img width="300" alt="useCaseDiagram" src="res/erd.PNG">
 
 ## API 명세서
 
 <img width="800" alt="Get" src="res/api.PNG">
 
----
-### 부족한 부분
-- postman 활용 : 팀원들의 도움으로 잘 활용할 수 있게됨
-- API 명세서 작성 : 튜터님 피드백 👀 [REST API URL 컨벤션 Top5](https://blog.pumpkin-raccoon.com/115) 참고하여 수정
-- github 활용 : 두 개의 계정 활용해 연습
-- @Transaction 전파 부분 : 강의 반복수강
 
+1. 수정, 삭제 API의 request를 어떤 방식으로 사용하셨나요? (param, query, body)
+
+   @RequestBody
+
+2. 어떤 상황에 어떤 방식의 request를 써야하나요?
+
+   `create` API
+
+    - 방식: **`POST`** 메서드
+    - Request Body: 새로운 리소스를 생성하기 위한 데이터
+    - 주로 JSON 또는 XML 형식으로 데이터를 전송하여 요청 본문에 포함시킵니다.
+
+   `get` API
+
+    - 방식: **`GET`** 메서드
+    - Request Parameter 또는 Query Parameter: 요청하는 리소스의 식별자 또는 필터링에 사용되는 매개변수
+    - 주로 URL에 쿼리 파라미터 형태로 전달합니다.
+
+   `update` API
+
+    - 방식: **`PUT`** 또는 **`PATCH`** 메서드
+    - Request Body: 업데이트할 리소스의 데이터
+    - 리소스의 전체 업데이트인 경우에는 **`PUT`** 메서드를 사용하며, 일부 업데이트인 경우에는 **`PATCH`** 메서드를 사용합니다.
+
+   `delete` API
+
+    - 방식: **`DELETE`** 메서드
+    - Request Parameter 또는 Query Parameter: 삭제할 리소스의 식별자 또는 필요한 매개변수
+    - 주로 URL에 쿼리 파라미터 형태로 전달합니다.
+3. RESTful한 API를 설계했나요? 어떤 부분이 그런가요? 어떤 부분이 그렇지 않나요?
+    1. 삭제 API에 body를 사용했습니다.
+4. 적절한 관심사 분리를 적용하였나요? (Controller, Repository, Service)
+5. API 명세서 작성 가이드라인을 검색하여 직접 작성한 API 명세서와 비교해보세요!
 
